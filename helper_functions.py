@@ -50,3 +50,7 @@ def get_arrival_date(x):
         return x['DATE'] + datetime.timedelta(days=1)
     else:
         return x['DATE']
+    
+
+def preprocess_for_regression(df):
+    return 0

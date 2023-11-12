@@ -14,6 +14,7 @@ import plotly.express as px
 import sklearn
 import datetime
 
+from sklearn.metrics import log_loss, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 #----------------------------------------------------------------
 # Data pre-processing functions
@@ -52,5 +53,27 @@ def get_arrival_date(x):
         return x['DATE']
     
 
-def preprocess_for_regression(df):
-    return 0
+
+def clf_evaluate_metrics(clf, x_test, y_test):
+    '''
+    Compute classification model predictions and probabilities and evaluate model's performance
+    '''
+    y_pred_proba = clf.predict_proba(x_test)
+    loss = log_loss(y_test, y_pred_proba)
+    y_pred = clf.predict(x_test)
+    acc = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+
+    print('Cross-entropy loss = {:.3f}'.format(loss))
+    print('Accuracy = {:.3f}'.format(acc))
+    print('Precision = {:.3f}'.format(precision))
+    print('Recall = {:.3f}'.format(recall))
+    print('F1-score = {:.3f}'.format(f1))
+
+    conf_matrix = confusion_matrix(y_test, y_pred, labels=['ON-TIME', 'DELAY'])
+
+    sns.heatmap(conf_matrix, labels=conf_matrix.index)
+
+    return y_pred, y_pred_proba

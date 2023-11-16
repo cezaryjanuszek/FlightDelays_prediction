@@ -14,7 +14,7 @@ import plotly.express as px
 import sklearn
 import datetime
 
-from sklearn.metrics import log_loss, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import log_loss, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 
 #----------------------------------------------------------------
 # Data pre-processing functions
@@ -53,6 +53,38 @@ def get_arrival_date(x):
         return x['DATE']
     
 
+#----------------------------------------
+# Functions for prediction model
+#----------------------------------------
+
+
+def cyclical_encode(data, col, max_val):
+    '''
+    Encoding based on the idea that dates and times are cyclical and hours like 23:00 and 00:00 are closer to each other than if assumed linear
+    The use of sine and cosine allows to put this time/date points on a circle representing their cyclical structure
+    '''
+    data[col + '_sin'] = np.sin(2 * np.pi * data[col]/max_val)
+    data[col + '_cos'] = np.cos(2 * np.pi * data[col]/max_val)
+    return data
+
+
+def set_delay_class(x):
+    '''
+    Custom label encoder for target variable - FLIGHT DELAY
+    '''
+    if x <= 15:
+        # No delay
+        return 0
+    elif x > 15 and x <= 45:
+        # Delay
+        return 1
+    elif x > 45 and x <= 120:
+        # Important delay
+        return 2
+    else:
+        # Big delay
+        return 3
+
 
 def clf_evaluate_metrics(clf, x_test, y_test):
     '''
@@ -62,18 +94,24 @@ def clf_evaluate_metrics(clf, x_test, y_test):
     loss = log_loss(y_test, y_pred_proba)
     y_pred = clf.predict(x_test)
     acc = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    roc_auc = roc_auc_score(y_test, y_pred_proba, average='weighted', multi_class='ovr')
 
     print('Cross-entropy loss = {:.3f}'.format(loss))
     print('Accuracy = {:.3f}'.format(acc))
     print('Precision = {:.3f}'.format(precision))
     print('Recall = {:.3f}'.format(recall))
     print('F1-score = {:.3f}'.format(f1))
+    print('ROC-AUC = {:.3f}'.format(roc_auc))
 
-    conf_matrix = confusion_matrix(y_test, y_pred, labels=['ON-TIME', 'DELAY'])
-
-    sns.heatmap(conf_matrix, labels=conf_matrix.index)
+    conf_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred, normalize='true'), index=['No delay', 'Delay', 'Important delay', 'Big delay'], columns=['No delay', 'Delay', 'Important delay', 'Big delay'])
+    
+    plt.figure()
+    sns.heatmap(conf_matrix, annot=True, cmap='vlag', fmt='.4f')
+    plt.ylabel('True value')
+    plt.xlabel('Predicted value')
+    plt.show()
 
     return y_pred, y_pred_proba

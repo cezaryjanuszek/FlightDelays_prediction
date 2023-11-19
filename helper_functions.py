@@ -14,7 +14,7 @@ import plotly.express as px
 import sklearn
 import datetime
 
-from sklearn.metrics import log_loss, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
+from sklearn.metrics import log_loss, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, balanced_accuracy_score
 
 #----------------------------------------------------------------
 # Data pre-processing functions
@@ -75,10 +75,10 @@ def set_delay_class(x):
     if x <= 15:
         # No delay
         return 0
-    elif x > 15 and x <= 45:
+    elif x > 15 and x <= 60:
         # Delay
         return 1
-    elif x > 45 and x <= 120:
+    elif x > 60 and x <= 180:
         # Important delay
         return 2
     else:
@@ -93,11 +93,11 @@ def clf_evaluate_metrics(clf, x_test, y_test):
     y_pred_proba = clf.predict_proba(x_test)
     loss = log_loss(y_test, y_pred_proba)
     y_pred = clf.predict(x_test)
-    acc = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, average='weighted')
-    recall = recall_score(y_test, y_pred, average='weighted')
-    f1 = f1_score(y_test, y_pred, average='weighted')
-    roc_auc = roc_auc_score(y_test, y_pred_proba, average='weighted', multi_class='ovr')
+    acc = balanced_accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='macro')
+    recall = recall_score(y_test, y_pred, average='macro')
+    f1 = f1_score(y_test, y_pred, average='macro')
+    roc_auc = roc_auc_score(y_test, y_pred_proba, average='macro', multi_class='ovr')
 
     print('Cross-entropy loss = {:.3f}'.format(loss))
     print('Accuracy = {:.3f}'.format(acc))

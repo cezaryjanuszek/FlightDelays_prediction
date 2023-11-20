@@ -104,7 +104,6 @@ def clf_evaluate_metrics(clf, x_test, y_test):
     print('Precision = {:.3f}'.format(precision))
     print('Recall = {:.3f}'.format(recall))
     print('F1-score = {:.3f}'.format(f1))
-    print('ROC-AUC = {:.3f}'.format(roc_auc))
 
     conf_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred, normalize='true'), index=['No delay', 'Delay', 'Important delay', 'Big delay'], columns=['No delay', 'Delay', 'Important delay', 'Big delay'])
     

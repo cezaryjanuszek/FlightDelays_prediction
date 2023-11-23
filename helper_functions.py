@@ -5,16 +5,13 @@
 #
 #----------------------------------------------------------------
 
-import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.express as px
-import sklearn
 import datetime
 
-from sklearn.metrics import log_loss, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, balanced_accuracy_score
+from sklearn.metrics import log_loss, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, balanced_accuracy_score
 
 #----------------------------------------------------------------
 # Data pre-processing functions
@@ -32,7 +29,8 @@ def convert_to_time(time):
         time_string = '{0:04}'.format(int(time))
         hour_min = datetime.time(int(time_string[:2]), int(time_string[2:]))
         return hour_min
-    
+
+
 def combine_date_time(x, date, time):
     '''
     Combine date and time to create full datetime object
@@ -41,7 +39,8 @@ def combine_date_time(x, date, time):
         return np.nan
     else:
         return datetime.datetime.combine(x[date], x[time])
-    
+
+
 def get_arrival_date(x):
     '''
     Compute the arrival date based on departure and arrival time.

@@ -1,4 +1,4 @@
-# FlightDelays_prediction
+# Flight Delays prediction
 
 #### Research question: *What is the influence of the different airlines/airports on the flight delays?*
 

@@ -1,6 +1,6 @@
 # FlightDelays_prediction
 
-### Research question: *What is the influence of the different airlines/airports on the flight delays?*
+#### Research question: *What is the influence of the different airlines/airports on the flight delays?*
 
 The goal of this assignment is to to build an interpretable flight prediction model using the [2015 US domestic flight delays and cancellations dataset from Kaggle](https://www.kaggle.com/datasets/usdot/flight-delays/data).
 

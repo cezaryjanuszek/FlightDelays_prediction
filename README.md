@@ -11,3 +11,9 @@ The project itself is divided into 4 notebooks:
 2. [Exploratory Data Analysis](Exploratory_Data_Analysis.ipynb)- allows to explore our flights dataset and investigate some inital relations between airlines/airports and flight delays
 3. [Baseline prediction model](PredictionModel_baseline.ipynb) - sets up the baseline flight delay prediction model using a Decision Tree and provide first insights on feature importance
 4. [Neural Network prediction model](PredictionModel_complex.ipynb) - contains the implementation of an interpretable MLP to predict the fligh delays as well as get some insights about its predictions
+
+#### Libraries
+To install all necessary libraries and dependencies in your environment run the `requirements.txt` file, as follows:
+```
+$ pip install -r requirements.txt
+```

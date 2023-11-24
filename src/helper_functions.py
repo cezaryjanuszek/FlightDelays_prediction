@@ -113,3 +113,16 @@ def clf_evaluate_metrics(clf, x_test, y_test):
     plt.show()
 
     return y_pred, y_pred_proba
+
+
+def visualize_importances(features_df, target):
+  '''
+  Visualize feature attributions scores
+  '''
+  print('Target class = ', target)
+
+  plt.figure()
+  sns.barplot(features_df, x='Attribution score', y=features_df.index, hue='Method')
+  plt.ylabel('Features')
+  plt.title('Most important features')
+  plt.show()

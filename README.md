@@ -4,7 +4,7 @@
 
 The goal of this assignment is to to build an interpretable flight prediction model using the [2015 US domestic flight delays and cancellations dataset from Kaggle](https://www.kaggle.com/datasets/usdot/flight-delays/data).
 
-All used data can be found in `Data/`, the two trained MLP models are saved in `model/` and some useful functions used in the notebook are in `helper_functions.py`.
+All used data can be found in `Data/`, the two trained MLP models are saved in `saved_models/` and some useful functions used in the notebook are in `src/helper_functions.py`.
 
 The project itself is divided into 4 notebooks:
 1. [Data processing](Data_preprocessing.ipynb) - contains all the required data cleaning and processing pipeline before doing some exploratory analysis and creating the prediction models
